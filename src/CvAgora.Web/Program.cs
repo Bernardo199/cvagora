@@ -29,14 +29,15 @@ builder.Services.AddMemoryCache();
 // Auth por cookie (painel admin)
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
-    {
-        options.LoginPath = "/admin/login";
-        options.LogoutPath = "/admin/logout";
-        options.ExpireTimeSpan = TimeSpan.FromHours(8);
-        options.Cookie.Name = "cvagora.admin";
-        options.Cookie.HttpOnly = true;
-        options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
-    });
+        {
+            options.LoginPath = "/admin/login";
+            options.LogoutPath = "/admin/logout";
+            options.ExpireTimeSpan = TimeSpan.FromHours(8);
+            options.Cookie.Name = "cvagora.admin";
+            options.Cookie.HttpOnly = true;
+            options.Cookie.SecurePolicy = CookieSecurePolicy.None;
+            options.Cookie.SameSite = SameSiteMode.Lax;
+        });
 
 builder.Services.AddAuthorization();
 
