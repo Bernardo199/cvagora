@@ -21,7 +21,7 @@
                 <option value="">Seleccionar...</option>
                 @foreach (var cat in (IEnumerable<CvAgora.Core.Entities.Category>)ViewBag.Categories)
                 {
-                    <option value="@cat.Id" @(Model.CategoryId == cat.Id ? "selected" : "")>@cat.Name</option>
+                    <option value="@cat.Id" selected="@(Model.CategoryId == cat.Id ? "selected" : null)">@cat.Name</option>
                 }
             </select>
         </div>
