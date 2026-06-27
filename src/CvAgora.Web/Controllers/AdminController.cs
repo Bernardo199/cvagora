@@ -65,27 +65,29 @@ public class AdminController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(string username, string password)
     {
-        var validUser = _appConfig["AdminCredentials:Username"] ?? "admin";
-        var validPass = _appConfig["AdminCredentials:Password"] ?? "admin";
+    var validUser = _appConfig["AdminCredentials:Username"] ?? "admin";
+    var validPass = _appConfig["AdminCredentials:Password"] ?? "admin";
 
-            // Debug temporário
-            Console.WriteLine($"CONFIG USER: '{validUser}' | INPUT: '{username}'");
-            Console.WriteLine($"CONFIG PASS: '{validPass}' | INPUT: '{password}'");
+    Console.WriteLine($"CONFIG USER: '{validUser}' | INPUT: '{username}'");
+    Console.WriteLine($"CONFIG PASS: '{validPass}' | INPUT: '{password}'");
 
-        if (username != validUser || password != validPass)
-
-        var claims = new List<Claim>
-        {
-            new(ClaimTypes.Name, username),
-            new(ClaimTypes.Role, "Admin")
-        };
-
-        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
-
-        return RedirectToAction("Index");
+    if (username != validUser || password != validPass)
+    {
+        ViewBag.Error = "Credenciais inválidas.";
+        return View();
     }
 
+    var claims = new List<Claim>
+    {
+        new(ClaimTypes.Name, username),
+        new(ClaimTypes.Role, "Admin")
+    };
+
+    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
+
+    return RedirectToAction("Index");
+}
     [HttpGet("logout")]
     public async Task<IActionResult> Logout()
     {
