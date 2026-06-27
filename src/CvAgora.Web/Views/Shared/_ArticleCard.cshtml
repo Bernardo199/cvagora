@@ -1,0 +1,13 @@
+@model CvAgora.Core.Entities.Article
+
+@{
+    var colorClass = Model.Category?.ColorClass ?? "c-azul";
+    var tag = Model.Category?.TagLabel ?? Model.Category?.Name ?? "";
+}
+
+<article class="card @colorClass">
+    <span class="tag">@tag</span>
+    <h3><a href="/artigo/@Model.Slug" style="text-decoration:none;color:inherit;">@Model.Title</a></h3>
+    <p>@Model.Summary</p>
+    <span class="meta">@Model.Category?.Name · @Model.CreatedAt.ToString("d 'de' MMMM 'de' yyyy")</span>
+</article>

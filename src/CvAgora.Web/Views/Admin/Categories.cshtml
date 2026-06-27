@@ -1,0 +1,54 @@
+@model IEnumerable<CvAgora.Core.Entities.Category>
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Categorias";
+}
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;">
+
+<div>
+<h1 class="page-title">Categorias</h1>
+<table>
+    <thead><tr><th>Nome</th><th>Slug</th><th>Cor</th><th>Tag</th><th>Ordem</th></tr></thead>
+    <tbody>
+    @foreach (var c in Model.OrderBy(x => x.SortOrder))
+    {
+        <tr>
+            <td><strong>@c.Name</strong></td>
+            <td style="font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:#888;">@c.Slug</td>
+            <td>
+                <span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:
+                    @(c.ColorClass == "c-sol" ? "#F2B705" : c.ColorClass == "c-hibisco" ? "#C8392B" : c.ColorClass == "c-verde" ? "#3F7A56" : "#2E7DB8");
+                    vertical-align:middle;margin-right:6px;"></span>
+                @c.ColorClass
+            </td>
+            <td style="font-family:'IBM Plex Mono',monospace;font-size:0.78rem;">@c.TagLabel</td>
+            <td style="font-family:'IBM Plex Mono',monospace;font-size:0.82rem;">@c.SortOrder</td>
+        </tr>
+    }
+    </tbody>
+</table>
+</div>
+
+<div>
+<h1 class="page-title">Nova Categoria</h1>
+<form method="post" action="/admin/categorias/nova">
+    @Html.AntiForgeryToken()
+    <label for="Name">Nome</label>
+    <input id="Name" name="Name" type="text" required placeholder="ex: Desporto">
+    <label for="TagLabel">Etiqueta (tag)</label>
+    <input id="TagLabel" name="TagLabel" type="text" placeholder="ex: Desporto">
+    <label for="ColorClass">Cor</label>
+    <select id="ColorClass" name="ColorClass">
+        <option value="c-azul">Azul atlântico</option>
+        <option value="c-sol">Sol (amarelo)</option>
+        <option value="c-hibisco">Hibisco (vermelho)</option>
+        <option value="c-verde">Verde morabeza</option>
+    </select>
+    <label for="SortOrder">Ordem de apresentação</label>
+    <input id="SortOrder" name="SortOrder" type="number" value="10" min="1">
+    <button type="submit" class="btn-admin btn-primary">Criar categoria</button>
+</form>
+</div>
+
+</div>

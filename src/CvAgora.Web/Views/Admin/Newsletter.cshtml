@@ -1,0 +1,25 @@
+@model IEnumerable<CvAgora.Core.Entities.Newsletter>
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Newsletter";
+    var list = Model.ToList();
+}
+
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+    <h1 class="page-title" style="margin:0;">Newsletter — @list.Count subscritor(es)</h1>
+    <a href="/admin/newsletter/exportar" class="btn-admin btn-secondary">⬇ Exportar CSV</a>
+</div>
+
+<table>
+    <thead><tr><th>Email</th><th>Data subscrição</th><th>Estado</th></tr></thead>
+    <tbody>
+    @foreach (var n in list)
+    {
+        <tr>
+            <td>@n.Email</td>
+            <td style="font-family:'IBM Plex Mono',monospace;font-size:0.82rem;color:#888;">@n.SubscribedAt.ToString("dd/MM/yyyy HH:mm")</td>
+            <td><span class="badge @(n.Active ? "badge-green" : "badge-gray")">@(n.Active ? "Activo" : "Inactivo")</span></td>
+        </tr>
+    }
+    </tbody>
+</table>

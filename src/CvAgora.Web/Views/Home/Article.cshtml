@@ -1,0 +1,51 @@
+@model ArticleViewModel
+@{
+    ViewData["Title"] = Model.Article.MetaTitle ?? Model.Article.Title;
+    ViewData["Description"] = Model.Article.MetaDescription ?? Model.Article.Summary;
+    ViewData["GoogleAnalyticsId"] = Model.GoogleAnalyticsId;
+    if (!string.IsNullOrEmpty(Model.Article.ImageUrl))
+        ViewData["OgImage"] = Model.Article.ImageUrl;
+}
+
+@if (!string.IsNullOrEmpty(Model.AdSenseClient) && !Model.AdSenseClient.Contains("XXXXXXXXXX"))
+{
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=@Model.AdSenseClient" crossorigin="anonymous"></script>
+}
+
+<main style="padding:48px 0;">
+  <div class="wrap" style="max-width:760px;">
+
+    <div style="margin-bottom:24px;">
+        <a href="/categoria/@Model.Article.Category?.Slug" class="tag @(Model.Article.Category?.ColorClass ?? "c-azul")"
+           style="text-decoration:none;display:inline-block;margin-bottom:12px;">
+            @(Model.Article.Category?.TagLabel ?? Model.Article.Category?.Name)
+        </a>
+        <h1 style="font-size:clamp(1.8rem,4vw,2.8rem);line-height:1.1;margin-bottom:16px;color:var(--azul-atlantico);">
+            @Model.Article.Title
+        </h1>
+        <p style="font-size:1.1rem;color:#555;margin-bottom:8px;">@Model.Article.Summary</p>
+        <p class="mono" style="font-size:0.75rem;color:#888;">
+            @Model.Article.CreatedAt.ToString("d 'de' MMMM 'de' yyyy") · @Model.Article.ViewCount visualizações
+        </p>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.Article.ImageUrl))
+    {
+        <img src="@Model.Article.ImageUrl" alt="@Model.Article.Title"
+             style="width:100%;border-radius:12px;margin-bottom:32px;object-fit:cover;max-height:400px;">
+    }
+
+    <div style="margin:16px 0 32px;">
+        @await Html.PartialAsync("_AdSlot", (Model.AdSenseClient, Model.AdSenseSlot1))
+    </div>
+
+    <div class="article-body" style="font-size:1.05rem;line-height:1.75;">
+        @Html.Raw(Model.Article.Body)
+    </div>
+
+    <div style="margin-top:40px;padding-top:24px;border-top:1px solid var(--espuma-2);">
+        <a href="/" style="font-family:'IBM Plex Mono',monospace;font-size:0.8rem;text-transform:uppercase;
+           letter-spacing:0.05em;color:var(--azul-tubarao);">← Voltar às tendências</a>
+    </div>
+  </div>
+</main>

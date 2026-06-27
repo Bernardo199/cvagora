@@ -1,0 +1,44 @@
+@{
+    Layout = null;
+    ViewData["Title"] = "Login";
+}
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login — CV Agora</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#0E3A5F;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:'Source Serif 4',serif;}
+.card{background:#fff;border-radius:14px;padding:40px 36px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.25);}
+.logo{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:1.3rem;color:#0E3A5F;margin-bottom:28px;text-align:center;}
+.logo span{color:#C8392B;}
+label{display:block;font-family:'IBM Plex Mono',monospace;font-size:0.72rem;text-transform:uppercase;letter-spacing:.05em;color:#555;margin-bottom:6px;}
+input{width:100%;padding:12px 14px;border:1.5px solid #D0D5DD;border-radius:8px;font-size:1rem;margin-bottom:16px;transition:border-color .15s;}
+input:focus{outline:none;border-color:#2E7DB8;}
+button{width:100%;padding:13px;background:#0E3A5F;color:#fff;border:none;border-radius:8px;
+       font-family:'IBM Plex Mono',monospace;text-transform:uppercase;font-size:0.8rem;letter-spacing:.05em;cursor:pointer;}
+button:hover{background:#2E7DB8;}
+.error{background:#f8d7da;color:#721c24;padding:10px 14px;border-radius:8px;font-size:0.88rem;margin-bottom:16px;}
+</style>
+</head>
+<body>
+<div class="card">
+    <div class="logo">CV <span>·</span> AGORA <span style="display:block;font-size:0.7rem;color:#888;margin-top:4px;font-weight:400;">PAINEL DE ADMINISTRAÇÃO</span></div>
+    @if (ViewBag.Error != null)
+    {
+        <div class="error">@ViewBag.Error</div>
+    }
+    <form method="post" action="/admin/login">
+        @Html.AntiForgeryToken()
+        <label for="username">Utilizador</label>
+        <input id="username" name="username" type="text" autocomplete="username" required>
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+        <button type="submit">Entrar</button>
+    </form>
+</div>
+</body>
+</html>

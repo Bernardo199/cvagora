@@ -1,0 +1,44 @@
+@* Admin/Index.cshtml *@
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Dashboard";
+}
+
+<h1 class="page-title">Dashboard</h1>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="num">@ViewBag.PublishedArticles</div>
+        <div class="label">Artigos publicados</div>
+    </div>
+    <div class="stat-card" style="border-top-color:#C8392B;">
+        <div class="num">@ViewBag.TotalArticles</div>
+        <div class="label">Total de artigos</div>
+    </div>
+    <div class="stat-card" style="border-top-color:#3F7A56;">
+        <div class="num">@ViewBag.NewsletterCount</div>
+        <div class="label">Subscritores newsletter</div>
+    </div>
+</div>
+
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+    <h2 style="font-family:'IBM Plex Mono',monospace;font-size:0.85rem;text-transform:uppercase;color:#555;letter-spacing:.05em;">Artigos recentes</h2>
+    <a href="/admin/artigos/novo" class="btn-admin btn-primary">+ Novo artigo</a>
+</div>
+
+<table>
+    <thead><tr><th>Título</th><th>Categoria</th><th>Estado</th><th>Destaque</th><th>Vistas</th><th>Data</th></tr></thead>
+    <tbody>
+    @foreach (var a in ViewBag.RecentArticles)
+    {
+        <tr>
+            <td><a href="/admin/artigos/@a.Id/editar" style="color:#0E3A5F;">@a.Title</a></td>
+            <td>@a.Category?.Name</td>
+            <td><span class="badge @(a.Published ? "badge-green" : "badge-gray")">@(a.Published ? "Publicado" : "Rascunho")</span></td>
+            <td>@(a.Featured ? "⭐" : "—")</td>
+            <td>@a.ViewCount</td>
+            <td style="font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:#888;">@a.CreatedAt.ToString("dd/MM/yyyy")</td>
+        </tr>
+    }
+    </tbody>
+</table>

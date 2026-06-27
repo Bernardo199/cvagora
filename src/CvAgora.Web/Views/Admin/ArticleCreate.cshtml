@@ -1,0 +1,75 @@
+@model CvAgora.Core.Entities.Article
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Novo Artigo";
+    var isEdit = Model.Id > 0;
+}
+
+<h1 class="page-title">@(isEdit ? "Editar Artigo" : "Novo Artigo")</h1>
+
+<form method="post" style="max-width:860px;">
+    @Html.AntiForgeryToken()
+
+    <div class="form-grid">
+        <div>
+            <label for="Title">Título *</label>
+            <input id="Title" name="Title" type="text" value="@Model.Title" required>
+        </div>
+        <div>
+            <label for="CategoryId">Categoria *</label>
+            <select id="CategoryId" name="CategoryId" required>
+                <option value="">Seleccionar...</option>
+                @foreach (var cat in (IEnumerable<CvAgora.Core.Entities.Category>)ViewBag.Categories)
+                {
+                    <option value="@cat.Id" @(Model.CategoryId == cat.Id ? "selected" : "")>@cat.Name</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <label for="Summary">Resumo (aparece nos cards da homepage) *</label>
+    <textarea id="Summary" name="Summary" rows="3" required>@Model.Summary</textarea>
+
+    <label for="Body">Corpo do artigo (HTML permitido)</label>
+    <textarea id="Body" name="Body" rows="16" style="font-family:'IBM Plex Mono',monospace;font-size:0.88rem;">@Model.Body</textarea>
+
+    <div class="form-grid">
+        <div>
+            <label for="ImageUrl">URL da imagem de destaque</label>
+            <input id="ImageUrl" name="ImageUrl" type="text" value="@Model.ImageUrl" placeholder="https://...">
+        </div>
+        <div>
+            <label for="Slug">Slug (URL amigável — deixar vazio para gerar automaticamente)</label>
+            <input id="Slug" name="Slug" type="text" value="@Model.Slug" placeholder="gerado-automaticamente">
+        </div>
+    </div>
+
+    <div class="form-grid">
+        <div>
+            <label for="MetaTitle">Meta Title (SEO)</label>
+            <input id="MetaTitle" name="MetaTitle" type="text" value="@Model.MetaTitle">
+        </div>
+        <div>
+            <label for="MetaDescription">Meta Description (SEO)</label>
+            <input id="MetaDescription" name="MetaDescription" type="text" value="@Model.MetaDescription">
+        </div>
+    </div>
+
+    <div style="display:flex;gap:28px;margin-bottom:24px;">
+        <label style="display:flex;align-items:center;gap:8px;text-transform:none;font-size:1rem;cursor:pointer;">
+            <input type="checkbox" name="Published" value="true" @(Model.Published ? "checked" : "")
+                   style="width:18px;height:18px;margin:0;accent-color:#3F7A56;">
+            Publicado (visível no site)
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;text-transform:none;font-size:1rem;cursor:pointer;">
+            <input type="checkbox" name="Featured" value="true" @(Model.Featured ? "checked" : "")
+                   style="width:18px;height:18px;margin:0;accent-color:#F2B705;">
+            Destaque (aparece na homepage)
+        </label>
+    </div>
+
+    <div style="display:flex;gap:12px;">
+        <button type="submit" class="btn-admin btn-primary">@(isEdit ? "Guardar alterações" : "Criar artigo")</button>
+        <a href="/admin/artigos" class="btn-admin btn-secondary">Cancelar</a>
+    </div>
+</form>

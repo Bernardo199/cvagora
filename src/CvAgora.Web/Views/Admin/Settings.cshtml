@@ -1,0 +1,47 @@
+@model Dictionary<string, string>
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Configurações";
+}
+
+<h1 class="page-title">Configurações do site</h1>
+
+<form method="post" style="max-width:700px;">
+    @Html.AntiForgeryToken()
+
+    <h2 style="font-family:'IBM Plex Mono',monospace;font-size:0.82rem;text-transform:uppercase;color:#555;
+               letter-spacing:.05em;margin-bottom:20px;border-bottom:1px solid #E0E0E0;padding-bottom:10px;">Hero / Cabeçalho</h2>
+
+    @foreach (var key in new[]{"hero_eyebrow","hero_title","hero_subtitle","trending_section_title"})
+    {
+        var val = Model.GetValueOrDefault(key, "");
+        var desc = key switch {
+            "hero_eyebrow" => "Eyebrow do hero (ex: EDIÇÃO DE HOJE · 27 DE JUNHO DE 2026)",
+            "hero_title" => "Título principal (usar \\n para quebra de linha)",
+            "hero_subtitle" => "Subtítulo do hero",
+            "trending_section_title" => "Título da secção de tendências",
+            _ => key
+        };
+        <label for="@key">@desc</label>
+        <input id="@key" name="configs[@key]" type="text" value="@val">
+    }
+
+    <h2 style="font-family:'IBM Plex Mono',monospace;font-size:0.82rem;text-transform:uppercase;color:#555;
+               letter-spacing:.05em;margin:28px 0 20px;border-bottom:1px solid #E0E0E0;padding-bottom:10px;">Google / Analytics / Publicidade</h2>
+
+    @foreach (var key in new[]{"google_analytics_id","adsense_client","adsense_slot_1","adsense_slot_2"})
+    {
+        var val = Model.GetValueOrDefault(key, "");
+        var desc = key switch {
+            "google_analytics_id" => "Google Analytics 4 ID (ex: G-XXXXXXXXXX)",
+            "adsense_client" => "AdSense Publisher ID (ex: ca-pub-XXXXXXXXXXXXXXXX)",
+            "adsense_slot_1" => "AdSense Slot 1 — entre as tendências",
+            "adsense_slot_2" => "AdSense Slot 2 — antes do footer",
+            _ => key
+        };
+        <label for="@key">@desc</label>
+        <input id="@key" name="configs[@key]" type="text" value="@val" placeholder="Não configurado">
+    }
+
+    <button type="submit" class="btn-admin btn-primary">Guardar configurações</button>
+</form>

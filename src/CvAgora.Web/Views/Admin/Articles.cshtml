@@ -1,0 +1,36 @@
+@* Admin/Articles.cshtml *@
+@model IEnumerable<CvAgora.Core.Entities.Article>
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Artigos";
+}
+
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+    <h1 class="page-title" style="margin:0;">Artigos</h1>
+    <a href="/admin/artigos/novo" class="btn-admin btn-primary">+ Novo artigo</a>
+</div>
+
+<table>
+    <thead><tr><th>Título</th><th>Categoria</th><th>Estado</th><th>Destaque</th><th>Vistas</th><th>Criado</th><th>Acções</th></tr></thead>
+    <tbody>
+    @foreach (var a in Model)
+    {
+        <tr>
+            <td style="max-width:300px;"><a href="/admin/artigos/@a.Id/editar" style="color:#0E3A5F;font-weight:600;">@a.Title</a></td>
+            <td>@a.Category?.Name</td>
+            <td><span class="badge @(a.Published ? "badge-green" : "badge-gray")">@(a.Published ? "Publicado" : "Rascunho")</span></td>
+            <td>@(a.Featured ? "⭐" : "—")</td>
+            <td style="font-family:'IBM Plex Mono',monospace;font-size:0.82rem;">@a.ViewCount</td>
+            <td style="font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:#888;">@a.CreatedAt.ToString("dd/MM/yy")</td>
+            <td>
+                <a href="/admin/artigos/@a.Id/editar" class="btn-admin btn-secondary" style="font-size:0.7rem;padding:6px 12px;margin-right:6px;">Editar</a>
+                <form method="post" action="/admin/artigos/@a.Id/apagar" style="display:inline;"
+                      onsubmit="return confirm('Apagar este artigo?')">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn-admin btn-danger" style="font-size:0.7rem;padding:6px 12px;">Apagar</button>
+                </form>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

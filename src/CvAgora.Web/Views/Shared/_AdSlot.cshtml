@@ -1,0 +1,20 @@
+@model (string Client, string Slot)
+
+@if (!string.IsNullOrEmpty(Model.Client) && !Model.Client.Contains("XXXXXXXXXX"))
+{
+    <div class="ad-slot-live">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="@Model.Client"
+             data-ad-slot="@Model.Slot"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+}
+else
+{
+    <div class="ad-slot">
+        ESPAÇO PUBLICITÁRIO — configurar Google AdSense nas definições
+    </div>
+}
