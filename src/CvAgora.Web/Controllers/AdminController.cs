@@ -62,7 +62,7 @@ public class AdminController : Controller
 
     [AllowAnonymous]
     [HttpPost("login")]
-    [ValidateAntiForgeryToken]
+    //[ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(string username, string password)
     {
     var validUser = _appConfig["AdminCredentials:Username"] ?? "admin";
@@ -111,7 +111,7 @@ public class AdminController : Controller
     }
 
     [HttpPost("artigos/novo")]
-    [ValidateAntiForgeryToken]
+    //[ValidateAntiForgeryToken]
     public async Task<IActionResult> ArticleCreate(Article model)
     {
         if (!ModelState.IsValid)
@@ -141,7 +141,7 @@ public class AdminController : Controller
     }
 
     [HttpPost("artigos/{id:int}/editar")]
-    [ValidateAntiForgeryToken]
+    //[ValidateAntiForgeryToken]
     public async Task<IActionResult> ArticleEdit(int id, Article model)
     {
         if (!ModelState.IsValid)
