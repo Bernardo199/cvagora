@@ -27,13 +27,15 @@ public class HomeController : Controller
         _cache = cache;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int page = 1)
     {
-        const string cacheKey = "home_vm";
+        const string cacheKey = "home_vm_p{page}";
         if (!_cache.TryGetValue(cacheKey, out HomeViewModel? vm))
         {
             var configs = await _config.GetAllAsync();
-            var featured = await _articles.GetFeaturedAsync(6);
+            var featured = await _articles.GetFeaturedAsync(3);
+            var allArticles = await _articles.GetPublishedAsync(page, 9);
+            var totalArticles = await _articles.GetTotalCountAsync(true);
             var categories = await _categories.GetAllAsync();
             var cultureItems = await GetCultureItemsAsync();
 
@@ -48,8 +50,11 @@ public class HomeController : Controller
                 AdSenseSlot2 = configs.GetValueOrDefault("adsense_slot_2", ""),
                 GoogleAnalyticsId = configs.GetValueOrDefault("google_analytics_id", ""),
                 FeaturedArticles = featured.ToList(),
+                AllArticles = allArticles.ToList(),
                 Categories = categories.ToList(),
-                CultureItems = cultureItems
+                CultureItems = cultureItems,
+                CurrentPage = page,
+                TotalPages = (int)Math.Ceiling(totalArticles / 9.0)
             };
 
             _cache.Set(cacheKey, vm, TimeSpan.FromMinutes(5));
