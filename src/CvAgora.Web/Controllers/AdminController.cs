@@ -121,11 +121,12 @@ public class AdminController : Controller
     }
 
     [HttpPost("artigos/novo")]
-    //[ValidateAntiForgeryToken]
     public async Task<IActionResult> ArticleCreate(Article model)
     {
         if (!ModelState.IsValid)
         {
+            var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
+            Console.WriteLine("ERROS: " + string.Join(", ", errors));
             ViewBag.Categories = await _categories.GetAllAsync();
             return View(model);
         }
