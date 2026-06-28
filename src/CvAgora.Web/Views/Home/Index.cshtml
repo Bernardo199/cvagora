@@ -48,15 +48,46 @@
         <p>Um resumo das histórias que mais têm levado pessoas a pesquisar por Cabo Verde nos últimos dias.</p>
       </div>
 
-      @if (Model.FeaturedArticles.Any())
+      @* Artigos em destaque — hero cards *@
+@if (Model.FeaturedArticles.Any())
+{
+    <div class="trend-grid" style="margin-bottom:32px;">
+        @foreach (var article in Model.FeaturedArticles)
+        {
+            await Html.RenderPartialAsync("_ArticleCard", article);
+        }
+    </div>
+    <hr style="border:none;border-top:1px solid var(--espuma-2);margin:32px 0;">
+}
+
+@* Todos os artigos com paginação *@
+  @if (Model.AllArticles.Any())
+  {
+      <div class="trend-grid">
+          @foreach (var article in Model.AllArticles)
+          {
+              await Html.RenderPartialAsync("_ArticleCard", article);
+          }
+      </div>
+
+      @* Paginação *@
+      @if (Model.TotalPages > 1)
       {
-          <div class="trend-grid">
-              @foreach (var article in Model.FeaturedArticles)
+          <div style="display:flex;justify-content:center;gap:10px;margin-top:36px;">
+              @if (Model.CurrentPage > 1)
               {
-                  await Html.RenderPartialAsync("_ArticleCard", article);
+                  <a href="/?page=@(Model.CurrentPage - 1)" class="btn btn-ghost" style="color:var(--azul-atlantico);border-color:var(--azul-atlantico);">← Anterior</a>
+              }
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:0.82rem;padding:13px 0;color:#888;">
+                  Página @Model.CurrentPage de @Model.TotalPages
+              </span>
+              @if (Model.CurrentPage < Model.TotalPages)
+              {
+                  <a href="/?page=@(Model.CurrentPage + 1)" class="btn btn-primary">Seguinte →</a>
               }
           </div>
       }
+  }
       else
       {
           <p style="color:#888;padding:24px 0;">Nenhum artigo em destaque de momento. <a href="/admin">Adicionar conteúdo →</a></p>

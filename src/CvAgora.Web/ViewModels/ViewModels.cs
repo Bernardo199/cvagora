@@ -4,6 +4,9 @@ namespace CvAgora.Web.ViewModels;
 
 public class HomeViewModel
 {
+    public List<Article> AllArticles { get; set; } = new();
+    public int CurrentPage { get; set; } = 1;
+    public int TotalPages { get; set; } = 1;
     public string HeroTitle { get; set; } = "";
     public string HeroSubtitle { get; set; } = "";
     public string HeroEyebrow { get; set; } = "";
