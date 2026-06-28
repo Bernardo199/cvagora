@@ -158,11 +158,18 @@ public class AdminController : Controller
     }
 
     [HttpPost("artigos/{id:int}/editar")]
-    //[ValidateAntiForgeryToken]
     public async Task<IActionResult> ArticleEdit(int id, Article model)
     {
+        ModelState.Remove("Slug");
+        ModelState.Remove("Category");
+        ModelState.Remove("MetaTitle");
+        ModelState.Remove("MetaDescription");
+        ModelState.Remove("ImageUrl");
+
         if (!ModelState.IsValid)
         {
+            var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
+            Console.WriteLine("ERROS EDIT: " + string.Join(", ", errors));
             ViewBag.Categories = await _categories.GetAllAsync();
             return View(model);
         }
