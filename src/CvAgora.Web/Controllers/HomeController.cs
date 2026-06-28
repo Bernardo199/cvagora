@@ -112,7 +112,8 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    [ValidateAntiForgeryToken]
+    [Route("subscribe")]
+    //[ValidateAntiForgeryToken]
     public async Task<IActionResult> Subscribe(string email)
     {
         if (string.IsNullOrWhiteSpace(email) || !email.Contains('@'))
