@@ -123,6 +123,12 @@ public class AdminController : Controller
     [HttpPost("artigos/novo")]
     public async Task<IActionResult> ArticleCreate(Article model)
     {
+        ModelState.Remove("Slug");
+        ModelState.Remove("Category");
+        ModelState.Remove("MetaTitle");
+        ModelState.Remove("MetaDescription");
+        ModelState.Remove("ImageUrl");
+
         if (!ModelState.IsValid)
         {
             var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
